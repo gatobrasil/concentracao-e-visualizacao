@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Visualização Guiada</title>
+</head>
+<body style="background:black;color:white;text-align:center;font-family:sans-serif;">
+  <h1>🌌 Visualize seus sonhos...</h1>
+  <img src="https://media.tenor.com/lkkwOKIrB5QAAAAC/portal-hypnotic.gif" alt="Portal" width="200" style="border-radius:50%;" />
+  <h2 id="timer">04:00</h2>
+  <script>
+    let tempo = 240;
+    const timerEl = document.getElementById("timer");
+
+    setInterval(() => {
+      if (tempo > 0) {
+        tempo--;
+        const min = String(Math.floor(tempo / 60)).padStart(2, '0');
+        const sec = String(tempo % 60).padStart(2, '0');
+        timerEl.textContent = `${min}:${sec}`;
+        if (tempo === 0) alert("⏰ Tempo finalizado!");
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
