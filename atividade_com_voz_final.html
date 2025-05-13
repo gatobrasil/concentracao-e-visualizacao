@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Atividade com Voz</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #e0f7fa, #ffffff);
+      margin: 0;
+      padding: 20px;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h1 {
+      color: #00796b;
+    }
+
+    #timer {
+      font-size: 64px;
+      margin: 20px 0;
+      font-weight: bold;
+    }
+
+    #mensagemFinal {
+      display: none;
+      font-size: 18px;
+      color: #00796b;
+      margin-top: 20px;
+    }
+
+    button {
+      background-color: #00796b;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 10px;
+    }
+
+    button:hover {
+      background-color: #004d40;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 id="nomeAtividade">Minha Atividade</h1>
+    <div id="timer">00:10</div>
+    <button onclick="togglePausa()">⏯️ Pausar / Retomar</button>
+    <div id="mensagemFinal">⏰ Seu tempo acabou. Até a próxima!</div>
+    <button id="voltarBtn" style="display:none;" onclick="voltar()">🏠 Voltar ao Menu Principal</button>
+  </div>
+
+  <audio id="alarme" preload="auto">
+    <source src="https://soundbible.com/mp3/Beep-SoundBible.com-923660219.mp3" type="audio/mpeg" />
+    Seu navegador não suporta áudio.
+  </audio>
+
+  <script>
+    let tempo = 10;
+    let pausado = false;
+
+    const timerEl = document.getElementById("timer");
+    const alarme = document.getElementById("alarme");
+    const mensagemFinal = document.getElementById("mensagemFinal");
+    const voltarBtn = document.getElementById("voltarBtn");
+
+    function atualizarTimer() {
+      const min = String(Math.floor(tempo / 60)).padStart(2, '0');
+      const sec = String(tempo % 60).padStart(2, '0');
+      timerEl.textContent = `${min}:${sec}`;
+    }
+
+    function togglePausa() {
+      pausado = !pausado;
+    }
+
+    function falar(texto) {
+      const synth = window.speechSynthesis;
+      const msg = new SpeechSynthesisUtterance(texto);
+      msg.lang = 'pt-BR';
+      synth.speak(msg);
+    }
+
+    function voltar() {
+      window.location.href = "index.html";
+    }
+
+    setInterval(() => {
+      if (!pausado && tempo > 0) {
+        tempo--;
+        atualizarTimer();
+        if (tempo === 0) {
+          alarme.play();
+          falar("Seu tempo acabou. Até a próxima.");
+          mensagemFinal.style.display = "block";
+          voltarBtn.style.display = "inline-block";
+        }
+      }
+    }, 1000);
+
+    atualizarTimer();
+  </script>
+</body>
+</html>
