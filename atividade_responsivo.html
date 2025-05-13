@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Atividade em Andamento</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #e0f7fa, #ffffff);
+      margin: 0;
+      padding: 20px;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h1 {
+      color: #00796b;
+    }
+
+    #timer {
+      font-size: 64px;
+      margin: 20px 0;
+      font-weight: bold;
+    }
+
+    button {
+      background-color: #00796b;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 10px;
+    }
+
+    button:hover {
+      background-color: #004d40;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 id="nomeAtividade">Carregando...</h1>
+    <div id="timer">00:00</div>
+    <button onclick="togglePausa()">⏯️ Pausar / Retomar</button>
+  </div>
+
+  <audio id="alarme">
+    <source src="https://www.soundjay.com/button/beep-07.wav" type="audio/wav" />
+    Seu navegador não suporta áudio.
+  </audio>
+
+  <script>
+    let tempo = parseInt(localStorage.getItem("atividade_tempo") || "0") * 60;
+    let nome = localStorage.getItem("atividade_nome") || "Atividade";
+    let pausado = false;
+
+    const timerEl = document.getElementById("timer");
+    const nomeEl = document.getElementById("nomeAtividade");
+    const alarme = document.getElementById("alarme");
+
+    nomeEl.textContent = nome;
+
+    function atualizarTimer() {
+      const min = String(Math.floor(tempo / 60)).padStart(2, '0');
+      const sec = String(tempo % 60).padStart(2, '0');
+      timerEl.textContent = `${min}:${sec}`;
+    }
+
+    function togglePausa() {
+      pausado = !pausado;
+    }
+
+    setInterval(() => {
+      if (!pausado && tempo > 0) {
+        tempo--;
+        atualizarTimer();
+        if (tempo === 0) {
+          alarme.play();
+          alert("⏰ Tempo finalizado!");
+        }
+      }
+    }, 1000);
+
+    atualizarTimer();
+  </script>
+</body>
+</html>
