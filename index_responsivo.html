@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Programa de Concentração</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(to bottom, #f0f4ff, #d9e0f2);
+      color: #333;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    p {
+      text-align: center;
+      font-style: italic;
+      color: #555;
+    }
+
+    label, input, button {
+      display: block;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1em;
+    }
+
+    button {
+      padding: 12px;
+      background-color: #2d89ff;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      margin-top: 15px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #1c60c2;
+    }
+
+    .section {
+      margin-top: 30px;
+    }
+
+    .section button {
+      width: 100%;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎓 Concentração & Visualização</h1>
+    <p>"Você é capaz de conquistar tudo o que visualiza com clareza." — O Segredo</p>
+
+    <div class="section">
+      <h2>🔔 Criar nova atividade</h2>
+      <label for="nomeAtividade">Nome da atividade:</label>
+      <input id="nomeAtividade" type="text" placeholder="Ex: Estudar Biologia" />
+      <label for="tempoAtividade">Duração (minutos):</label>
+      <input id="tempoAtividade" type="number" placeholder="Ex: 25" />
+      <button onclick="iniciarAtividade()">Iniciar</button>
+    </div>
+
+    <div class="section">
+      <h2>🌠 Quadro dos Sonhos</h2>
+      <a href="quadro.html"><button>Ver / Criar Quadro</button></a>
+    </div>
+
+    <div class="section">
+      <h2>🔮 Visualização Guiada</h2>
+      <a href="visualizacao.html"><button>Iniciar Visualização</button></a>
+    </div>
+
+    <div class="section">
+      <h2>💬 Afirmações</h2>
+      <a href="afirmacoes.html"><button>Escrever Afirmações</button></a>
+    </div>
+  </div>
+
+  <script>
+    function iniciarAtividade() {
+      const nome = document.getElementById("nomeAtividade").value;
+      const tempo = document.getElementById("tempoAtividade").value;
+      if (!nome || !tempo) {
+        alert("Preencha o nome e tempo da atividade.");
+        return;
+      }
+      localStorage.setItem("atividade_nome", nome);
+      localStorage.setItem("atividade_tempo", tempo);
+      window.location.href = "atividade.html";
+    }
+  </script>
+</body>
+</html>
