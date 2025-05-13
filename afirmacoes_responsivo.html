@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Afirmações</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f3f9ff;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #2d89ff;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input[type="date"],
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1em;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #2d89ff;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #1c60c2;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>💬 Minhas Afirmações</h1>
+
+    <label for="data">📅 Data:</label>
+    <input type="date" id="data" />
+
+    <div id="afirmacoes"></div>
+
+    <button onclick="gerarPDF()">📄 Gerar PDF</button>
+  </div>
+
+  <script>
+    const afirmacoes = [];
+    const afirmacoesDiv = document.getElementById("afirmacoes");
+
+    for (let i = 0; i < 10; i++) {
+      const input = document.createElement("input");
+      input.type = "text";
+      input.placeholder = "Afirmação " + (i + 1);
+      input.style.marginTop = "10px";
+      afirmacoes.push(input);
+      afirmacoesDiv.appendChild(input);
+    }
+
+    function gerarPDF() {
+      const doc = new jspdf.jsPDF();
+      const data = document.getElementById("data").value;
+      doc.setFontSize(16);
+      doc.text(`Afirmações – ${data || "Data não definida"}`, 20, 20);
+      doc.setFontSize(12);
+      let y = 40;
+      afirmacoes.forEach((el, i) => {
+        if (el.value.trim()) {
+          doc.text(`${i + 1}. ${el.value}`, 20, y);
+          y += 10;
+        }
+      });
+      doc.save(`afirmacoes-${data || "sem-data"}.pdf`);
+    }
+  </script>
+</body>
+</html>
