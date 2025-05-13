@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Visualização Guiada</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at center, #1e1e2f, #000000);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    #timer {
+      font-size: 48px;
+      margin: 20px 0;
+      font-weight: bold;
+    }
+
+    #portal {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      margin: 20px 0;
+      border: 4px solid #fff;
+    }
+
+    #fim {
+      font-size: 24px;
+      color: #00ffcc;
+      margin-top: 20px;
+      display: none;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #00bfa5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #009e85;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌌 Visualize seus sonhos com clareza</h1>
+  <div id="portal">
+    <img src="https://media.tenor.com/lkkwOKIrB5QAAAAC/portal-hypnotic.gif" alt="Portal" style="width: 100%; height: 100%; border-radius: 50%;" />
+  </div>
+  <div id="timer">04:00</div>
+  <div id="fim">⏰ Tempo finalizado! Acredite no seu poder de realizar!</div>
+  <audio id="alarme">
+    <source src="https://www.soundjay.com/button/beep-07.wav" type="audio/wav" />
+  </audio>
+  <button onclick="reiniciar()">🔁 Visualizar novamente</button>
+  <button onclick="window.location.href='index.html'">🏠 Página Principal</button>
+
+  <script>
+    let tempo = 240;
+    const timerEl = document.getElementById("timer");
+    const fimEl = document.getElementById("fim");
+    const alarme = document.getElementById("alarme");
+
+    function atualizarTimer() {
+      const min = String(Math.floor(tempo / 60)).padStart(2, '0');
+      const sec = String(tempo % 60).padStart(2, '0');
+      timerEl.textContent = `${min}:${sec}`;
+    }
+
+    const intervalo = setInterval(() => {
+      if (tempo > 0) {
+        tempo--;
+        atualizarTimer();
+        if (tempo === 0) {
+          alarme.play();
+          fimEl.style.display = "block";
+        }
+      }
+    }, 1000);
+
+    function reiniciar() {
+      tempo = 240;
+      fimEl.style.display = "none";
+      atualizarTimer();
+    }
+
+    atualizarTimer();
+  </script>
+</body>
+</html>
