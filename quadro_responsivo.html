@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quadro dos Sonhos</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f9ff;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    input[type="text"], input[type="file"] {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+    }
+
+    .galeria {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .item {
+      width: 45%;
+      text-align: center;
+    }
+
+    .item img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #2d89ff;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      margin-top: 15px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #1c60c2;
+    }
+
+    @media (max-width: 600px) {
+      .item {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎯 Quadro dos Sonhos</h1>
+    <div id="inputs"></div>
+    <button onclick="adicionarCampo()">+ Adicionar Sonho</button>
+
+    <div id="quadroPDF" style="margin-top:20px;">
+      <h2 style="text-align:center;">🖼️ Meu Quadro dos Sonhos</h2>
+      <div id="galeria" class="galeria"></div>
+    </div>
+
+    <button onclick="gerarPDF()">📄 Criar PDF</button>
+  </div>
+
+  <script>
+    let count = 0;
+    const sonhos = [];
+
+    function adicionarCampo() {
+      if (count >= 5) return;
+
+      const index = count;
+      const div = document.createElement("div");
+      div.innerHTML = \`
+        <input type="text" placeholder="Nome do sonho" onchange="atualizarNome(\${index}, this.value)" />
+        <input type="file" accept="image/*" onchange="carregarImagem(event, \${index})" />
+      \`;
+      document.getElementById("inputs").appendChild(div);
+
+      sonhos.push({ nome: "", imagem: "" });
+      count++;
+    }
+
+    function atualizarNome(i, nome) {
+      sonhos[i].nome = nome;
+      renderGaleria();
+    }
+
+    function carregarImagem(event, i) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        sonhos[i].imagem = e.target.result;
+        renderGaleria();
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+
+    function renderGaleria() {
+      const galeria = document.getElementById("galeria");
+      galeria.innerHTML = "";
+      sonhos.forEach((s) => {
+        if (s.nome || s.imagem) {
+          const div = document.createElement("div");
+          div.className = "item";
+          div.innerHTML = \`
+            <img src="\${s.imagem}" alt="imagem" />
+            <p>\${s.nome}</p>
+          \`;
+          galeria.appendChild(div);
+        }
+      });
+    }
+
+    function gerarPDF() {
+      html2canvas(document.getElementById("quadroPDF")).then(canvas => {
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jspdf.jsPDF();
+        pdf.addImage(imgData, "PNG", 10, 10, 190, 0);
+        pdf.save("quadro-dos-sonhos.pdf");
+      });
+    }
+
+    adicionarCampo();
+  </script>
+</body>
+</html>
